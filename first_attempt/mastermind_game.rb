@@ -52,7 +52,7 @@ class MastermindGame
 	def game_setup
 		generate_actual_colors_for_users_chosen_number_of_colors
 		find_all_possible_combinations_of_colors_in_users_chosen_number_of_rows
-        tell_user_game_is_about_to_begin
+		tell_user_game_is_about_to_begin
 	end
 
 	def generate_actual_colors_for_users_chosen_number_of_colors
@@ -63,7 +63,7 @@ class MastermindGame
 		@possible_combinations = (1..@colors).to_a.repeated_permutation(@rows).to_a
 	end
 
-    def tell_user_game_is_about_to_begin
+	def tell_user_game_is_about_to_begin
         puts "Alright, we're just about ready to play. Now you need to think up a secret code with #{@rows} rows."
         puts "The colors you can choose from are: "
         @possible_colors.each do |key, value|
