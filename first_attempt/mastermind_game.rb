@@ -64,14 +64,14 @@ class MastermindGame
 	end
 
 	def tell_user_game_is_about_to_begin
-        puts "Alright, we're just about ready to play. Now you need to think up a secret code with #{@rows} rows."
-        puts "The colors you can choose from are: "
-        @possible_colors.each do |key, value|
-            puts "- #{key} "
-        end
-        puts "Hit enter when you're ready for my first guess!"
-        ready = gets.chomp
-    end
+		puts "Alright, we're just about ready to play. Now you need to think up a secret code with #{@rows} rows."
+		puts "The colors you can choose from are: "
+		@possible_colors.each do |key, value|
+			puts "- #{key} "
+		end
+		puts "Hit enter when you're ready for my first guess!"
+		ready = gets.chomp
+	end
 
 	def game_ai
 		provide_first_guess_to_the_user
