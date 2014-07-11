@@ -4,6 +4,9 @@ class MastermindGame
 		@colors = 0
 		@rows = 0
 		@possible_colors = {red: 1, blue: 2, green: 3, yellow: 4, purple: 5, orange: 6, violet: 7, indigo: 8}
+		@double_check = ""
+		@black = ""
+		@white = ""
 	end
 
 	def play_game
@@ -22,27 +25,25 @@ class MastermindGame
 
 	def let_user_select_the_number_of_colors
 		puts "You can choose the number of possible colors available to our sequence." 
-		while @colors < 2 || @colors > 8 || @color_answer != "y"
+		until @colors >= 2 && @colors <= 8 && (@color_answer[0] == "y" || @color_answer[0] == "Y")
 			puts "How many colors would you like to play with? (Pick a number between 2 and 8)"
 			@colors = gets.chomp.to_i
-				if @colors >= 2 && @colors <= 8
-					puts "OK, great. Is it correct that you want to play with #{@colors} colors? (y/n)"
-					@color_answer = gets.chomp
-					@color_answer = @color_answer[0].downcase
-				end
+			if @colors >= 2 && @colors <= 8
+				puts "OK, great. Is it correct that you want to play with #{@colors} colors? (y/n)"
+				@color_answer = gets.chomp
+			end
 		end
 		@color_answer = ""
 	end
 
 	def let_user_select_the_number_of_rows
 		puts "You can also choose how long our sequence will be." 
-		while @rows < 2 || @rows > 6 || @rows_answer != "y"
+		until @rows >= 2 && @rows <= 6 && (@rows_answer[0] == "y" || @rows_answer[0] == "Y")
 			puts "How long of a sequence do you want to play with? (Pick a number between 2 and 6)"
 			@rows = gets.chomp.to_i
 				if @rows >= 2 && @rows <= 6
 					puts "Sounds good. So you want to play with #{@rows} rows? (y/n)"
 					@rows_answer = gets.chomp
-					@rows_answer = @rows_answer[0].downcase
 				end
 		end
 		@rows_answer = ""
@@ -113,44 +114,39 @@ class MastermindGame
 
 
 	def compare_guess_to_remaining_options(last_guess, possibility)
-		blacks = 0
-		whites = 0
-
-		possible_white = []
+		correct_color_and_placement = 0
+		correct_color_and_incorrect_placement = 0
+		possible_correct_color_but_incorrect_placement = []
 		remaining_options = []
-
 		last_guess.each_with_index do |value, index|
 			if last_guess[index] == possibility[index]
-				blacks += 1
+				correct_color_and_placement += 1
 			else
-				possible_white << last_guess[index]
+				possible_correct_color_but_incorrect_placement << last_guess[index]
 				remaining_options << possibility[index]
 			end
 		end
-
-		possible_white.each do |value|
+		possible_correct_color_but_incorrect_placement.each do |value|
 			if remaining_options.include? value
-				whites += 1
+				correct_color_and_incorrect_placement += 1
 				remaining_options.delete_at(remaining_options.index(value))
 			end
 		end
-
-		[blacks,whites]
+		[correct_color_and_placement,correct_color_and_incorrect_placement]
 	end
 
 	def get_feedback_on_guess_from_user
-		while @double_check != "y"
+		until @black.to_i >= 0 && @black.to_i <= @rows && @white.to_i >= 0 && @white.to_i <= @rows && (@double_check[0] == "y" || @double_check[0] == "Y")
 			puts "How many of my picks are the correct color AND in the correct position?"
 			@black = gets.chomp
 				if @black.to_i == @rows
-					puts "I won in #{@turns} turns!"
+					puts "I figured out your code in #{@turns} turns!"
 					break
 				end
 			puts "How many of my picks are the correct color in the incorrect position?"
 			@white = gets.chomp
-			puts "OK, so I have #{@black} picks with the correct color in the correct position, and #{@white} picks with the correct color in the incorrect position?"
+			puts "OK, so I have #{@black} picks with the correct color in the correct position, and #{@white} picks with the correct color in the incorrect position? (y/n)"
 			@double_check = gets.chomp
-			@double_check = @double_check[0].downcase
 		end
 		@double_check = ""
 	end
