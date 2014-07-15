@@ -1,7 +1,7 @@
-# This is a game of Mastermind where the computer is the codebreaker.
+This is a game of Mastermind where the computer is the codebreaker.
 
-# You get to set how many rows (anything between 2 and 6) and how many colors (between 2 and 8) to play with.
+In order to play, you must think up a 4 element long sequence drawn from a pool of six colors. 
 
-# After you've chosen how many rows and colors to play, think up a secret code within those parameters. The computer will offer guesses and solicit feedback to figure out your sequence.
+The computer will offer guesses and solicit feedback to figure out your sequence.
 
-# The computer's formula for solving the problem is based on Donald Knuth's "The Computer as Mastermind".
+The computer's formula for solving the problem is based on Donald Knuth's "The Computer as Mastermind".
