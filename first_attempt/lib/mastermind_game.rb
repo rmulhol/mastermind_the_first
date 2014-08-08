@@ -250,9 +250,7 @@ class MastermindGame
 
 end
 
-my_game = MastermindGame.new(CommandLineDisplay.new, GameAI.new)
 
-my_game.play_game
 
 
 
