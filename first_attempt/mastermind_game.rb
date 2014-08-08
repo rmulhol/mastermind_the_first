@@ -41,15 +41,23 @@ class CommandLineDisplay
   end
 
   def announce_exit_from_game_following_empty_guess_pool
-    "Sorry it didn't work out this time. Hope to play again soon."
+    abort("Sorry it didn't work out this time. Hope to play again soon.")
   end
 
   def announce_computer_wins_the_game(turns)
-    "I figured out your code in #{turns} turns!"
+    if turns == 1
+      abort("I figured out your code in #{turns} turn!")
+    else
+      abort("I figured out your code in #{turns} turns!")
+    end
   end
 
-  def error_message
-    puts "Oops! That's not a valid response. Try again."
+  def announce_error_for_mathematically_impossible_feedback
+  	puts "Oops! That feedback is mathematically impossible - let's try again!"
+  end
+
+  def announce_error_for_feedback_that_is_not_a_number_between_zero_and_four
+  	puts "I don't understand! Please enter a number between 0 and 4."
   end
 
 end
@@ -112,7 +120,6 @@ class MastermindGame
     @rows = 4
     @possible_colors = {red: 1, blue: 2, green: 3, yellow: 4, purple: 5, orange: 6}
     @possible_combinations = @logic.find_all_possible_combinations_of_colors(@number_of_colors, @rows)
-    @double_check = ""
     @correct_color_and_correct_placement = ""
     @correct_color_and_incorrect_placement = ""
     @turns = 0
@@ -168,7 +175,7 @@ class MastermindGame
       if confirmed?(response)
         restart_game
       end
-      abort(@display.announce_exit_from_game_following_empty_guess_pool) unless confirmed?(response)
+      @display.announce_exit_from_game_following_empty_guess_pool unless confirmed?(response)
     end
   end
 
@@ -193,13 +200,13 @@ class MastermindGame
 
 
   def get_feedback_on_guess_from_user
-    @double_check = ""
-    until confirmed?(@double_check)
+    @double_check_feedback = ""
+    until confirmed?(@double_check_feedback)
       get_feedback_from_user_on_correct_color_and_correct_placement
       get_feedback_from_user_on_correct_color_and_incorrect_placement
-      get_new_feedback_if_the_users_feedback_is_mathematically_impossible
+      get_new_feedback_if_the_user_feedback_is_mathematically_impossible
       @display.confirm_feedback(@correct_color_and_correct_placement, @correct_color_and_incorrect_placement)
-      @double_check = @display.get_input
+      @double_check_feedback = @display.get_input
     end
   end
 
@@ -211,24 +218,24 @@ class MastermindGame
     @display.get_feedback_on_correct_color_and_correct_placement
     @correct_color_and_correct_placement = @display.get_input
     if user_feedback_is_not_valid?(@correct_color_and_correct_placement)
-      @display.error_message
+      @display.announce_error_for_feedback_that_is_not_a_number_between_zero_and_four
       get_feedback_from_user_on_correct_color_and_correct_placement
     end
-    abort(@display.announce_computer_wins_the_game(@turns)) unless @correct_color_and_correct_placement.to_i != @rows
+    @display.announce_computer_wins_the_game(@turns) unless @correct_color_and_correct_placement.to_i != @rows
   end
 
   def get_feedback_from_user_on_correct_color_and_incorrect_placement
     @display.get_feedback_on_correct_color_and_incorrect_placement
     @correct_color_and_incorrect_placement = @display.get_input
     if user_feedback_is_not_valid?(@correct_color_and_incorrect_placement)
-      @display.error_message
+      @display.announce_error_for_feedback_that_is_not_a_number_between_zero_and_four
       get_feedback_from_user_on_correct_color_and_incorrect_placement
     end
   end
 
-  def get_new_feedback_if_the_users_feedback_is_mathematically_impossible
+  def get_new_feedback_if_the_user_feedback_is_mathematically_impossible
     if mathematically_impossible?
-      @display.error_message
+      @display.announce_error_for_mathematically_impossible_feedback
       get_feedback_on_guess_from_user
     end
   end
@@ -238,7 +245,7 @@ class MastermindGame
   end
 
   def user_feedback_is_not_valid?(feedback)
-    feedback.to_i < 0 || feedback.to_i > @rows || (feedback.strip != "0" && feedback.strip != "1" && feedback.strip != "2" && feedback.strip != "3" && feedback.strip != "4")
+    feedback.strip != "0" && feedback.strip != "1" && feedback.strip != "2" && feedback.strip != "3" && feedback.strip != "4"
   end
 
 end
