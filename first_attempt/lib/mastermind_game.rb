@@ -104,7 +104,7 @@ class MastermindGame
   def get_feedback_from_user_on_correct_color_and_correct_placement
     @display.get_feedback_on_correct_color_and_correct_placement
     @correct_color_and_correct_placement = @display.get_input
-    if user_feedback_is_not_valid?(@correct_color_and_correct_placement)
+    if !user_feedback_valid?(@correct_color_and_correct_placement)
       @display.announce_error_for_feedback_that_is_not_a_number_between_zero_and_four
       get_feedback_from_user_on_correct_color_and_correct_placement
     end
@@ -114,7 +114,7 @@ class MastermindGame
   def get_feedback_from_user_on_correct_color_and_incorrect_placement
     @display.get_feedback_on_correct_color_and_incorrect_placement
     @correct_color_and_incorrect_placement = @display.get_input
-    if user_feedback_is_not_valid?(@correct_color_and_incorrect_placement)
+    if !user_feedback_valid?(@correct_color_and_incorrect_placement)
       @display.announce_error_for_feedback_that_is_not_a_number_between_zero_and_four
       get_feedback_from_user_on_correct_color_and_incorrect_placement
     end
@@ -132,8 +132,10 @@ class MastermindGame
     (@correct_color_and_correct_placement.to_i == (@rows - 1) && @correct_color_and_incorrect_placement.to_i == 1) || (@correct_color_and_correct_placement.to_i + @correct_color_and_incorrect_placement.to_i) > @rows
   end
 
-  def user_feedback_is_not_valid?(feedback)
-    feedback.strip != "0" && feedback.strip != "1" && feedback.strip != "2" && feedback.strip != "3" && feedback.strip != "4"
+  def user_feedback_valid?(feedback)
+    feedback_to_check = feedback.strip
+    valid = ["0","1","2","3","4"]
+    valid.include?feedback_to_check
   end
 
 end
