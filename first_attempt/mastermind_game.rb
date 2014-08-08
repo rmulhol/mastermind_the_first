@@ -53,11 +53,11 @@ class CommandLineDisplay
   end
 
   def announce_error_for_mathematically_impossible_feedback
-  	puts "Oops! That feedback is mathematically impossible - let's try again!"
+    puts "Oops! That feedback is mathematically impossible - let's try again!"
   end
 
   def announce_error_for_feedback_that_is_not_a_number_between_zero_and_four
-  	puts "I don't understand! Please enter a number between 0 and 4."
+    puts "I don't understand! Please enter a number between 0 and 4."
   end
 
 end
