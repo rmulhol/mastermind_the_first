@@ -236,7 +236,8 @@ class MastermindGame
   def get_new_feedback_if_the_user_feedback_is_mathematically_impossible
     if mathematically_impossible?
       @display.announce_error_for_mathematically_impossible_feedback
-      get_feedback_on_guess_from_user
+      get_feedback_from_user_on_correct_color_and_correct_placement
+      get_feedback_from_user_on_correct_color_and_incorrect_placement
     end
   end
 
