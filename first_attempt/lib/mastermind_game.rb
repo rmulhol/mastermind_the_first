@@ -9,19 +9,64 @@ class MastermindGame
     @possible_combinations = @logic.find_all_possible_combinations_of_colors(@number_of_colors, @rows)
     @correct_color_and_correct_placement = ""
     @correct_color_and_incorrect_placement = ""
+    @gameplay_selection = ""
     @turns = 0
   end
 
   def play_game
-    @display.welcome_user
-    solve_the_secret_combination
+    game_selection
+    start_game
   end
 
   private
 
+  def game_selection
+    @display.welcome_user
+    @gameplay_selection = @display.get_input
+    until game_selection_is_valid?
+      @display.announce_error_for_incorrect_gameplay_selection
+      @gameplay_selection = @display.get_input
+    end
+  end
+
+  def game_selection_is_valid?
+    @gameplay_selection == "codemaker" || @gameplay_selection == "codebreaker"
+  end
+
+  def start_game
+    if @gameplay_selection == "codemaker"
+      play_game_with_user_as_codemaker
+    elsif @gameplay_selection == "codebreaker"
+      play_game_with_user_as_codebreaker
+    end
+  end
+
+  def convert_number_array_to_color_array(guess)
+    guess.each_with_index do |value, index|
+      guess[index] = @possible_colors.key(value).to_s
+    end
+  end
+
+  def convert_color_array_to_number_array(guess)
+    guess.each_with_index do |value, index|
+      guess[index] = @possible_colors[value.to_sym]
+    end
+  end
+
+  def confirmed?(matter_to_confirm)
+    matter_to_confirm[0] == "y" || matter_to_confirm[0] == "Y"
+  end
+
+# code for user as codemaker
+
+  def play_game_with_user_as_codemaker
+    @display.welcome_message_for_user_as_codemaker
+    solve_the_secret_combination
+  end
+
   def solve_the_secret_combination
     provide_first_guess_to_the_user
-    until game_over?
+    until user_as_codemaker_game_over?
       get_feedback_on_guess_from_user
       use_feedback_to_output_another_guess
     end
@@ -33,7 +78,7 @@ class MastermindGame
     @turns += 1
   end
 
-  def game_over?
+  def user_as_codemaker_game_over?
     @correct_color_and_correct_placement.to_i == @rows
   end
 
@@ -60,31 +105,18 @@ class MastermindGame
       @display.announce_out_of_guesses
       response = @display.get_input
       if confirmed?(response)
-        restart_game
+        restart_game_with_user_as_codemaker
       end
-      @display.announce_exit_from_game_following_empty_guess_pool unless confirmed?(response)
+      @display.announce_exit_from_game unless confirmed?(response)
     end
   end
 
-  def restart_game
-    @display.announce_restart_following_empty_guess_pool
+  def restart_game_with_user_as_codemaker
+    @display.announce_game_restart
     @possible_combinations = @logic.find_all_possible_combinations_of_colors(@number_of_colors, @rows)
     @turns = 0
     solve_the_secret_combination
   end
-
-  def convert_number_array_to_color_array(guess)
-    guess.each_with_index do |value, index|
-      guess[index] = @possible_colors.key(value).to_s
-    end
-  end
-
-  def convert_color_array_to_number_array(guess)
-    guess.each_with_index do |value, index|
-      guess[index] = @possible_colors[value.to_sym]
-    end
-  end
-
 
   def get_feedback_on_guess_from_user
     @double_check_feedback = ""
@@ -95,10 +127,6 @@ class MastermindGame
       @display.confirm_feedback(@correct_color_and_correct_placement, @correct_color_and_incorrect_placement)
       @double_check_feedback = @display.get_input
     end
-  end
-
-  def confirmed?(matter_to_confirm)
-    matter_to_confirm[0] == "y" || matter_to_confirm[0] == "Y"
   end
 
   def get_feedback_from_user_on_correct_color_and_correct_placement
@@ -138,6 +166,61 @@ class MastermindGame
     valid.include?feedback_to_check
   end
 
+# code for user as codebreaker
+
+  def play_game_with_user_as_codebreaker
+    @display.welcome_message_for_user_as_codebreaker
+    generate_secret_code
+    collect_first_guess_and_provide_feedback
+    let_the_user_provide_successive_guesses_and_provide_feedback
+  end
+
+  def generate_secret_code
+    @secret_code = @logic.generate_guess(@possible_combinations)
+  end
+
+  def collect_first_guess_and_provide_feedback
+    @display.get_first_guess
+    @user_guess = ""
+    provide_feedback_on_user_guess
+  end
+
+  def let_the_user_provide_successive_guesses_and_provide_feedback
+    until user_as_codebreaker_game_over?
+      @user_guess = ""
+      @display.get_non_first_guess
+      provide_feedback_on_user_guess
+    end
+    @display.announce_user_wins_the_game(@turns)
+  end
+
+  def provide_feedback_on_user_guess
+    until @user_guess.length == 4
+        @user_guess = @display.get_input
+        if @user_guess.split.length != 4
+          puts "You didn't enter a code with four spots!"
+        end
+        if @user_guess.include? ","
+          @user_guess = @user_guess.split(/,/).collect {|guess_item| guess_item.strip.downcase}
+        else
+          @user_guess = @user_guess.split.collect {|guess_item| guess_item.downcase}
+        end
+      end
+    compare_user_guess_to_secret_code
+    @turns += 1
+    @display.announce_user_wins_the_game(@turns) if user_as_codebreaker_game_over?
+    @display.provide_feedback_to_the_user(@result_of_comparsion[0], @result_of_comparsion[1])
+    puts "My code is #{@secret_code}."
+  end
+
+  def user_as_codebreaker_game_over?
+    @user_guess == @secret_code
+  end
+
+  def compare_user_guess_to_secret_code
+    @result_of_comparsion = @logic.compare_guess_to_remaining_options(convert_color_array_to_number_array(@user_guess), @secret_code)
+  end
+  
 end
 
 
