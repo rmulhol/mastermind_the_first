@@ -195,7 +195,6 @@ class MastermindGame
       @turns += 1
       provide_feedback_on_user_guess
     end
-    @display.announce_user_loses_the_game if @turns >= 10
     @display.announce_user_wins_the_game(@turns)
   end
 

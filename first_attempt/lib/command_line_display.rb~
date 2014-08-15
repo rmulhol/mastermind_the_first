@@ -106,9 +106,5 @@ class CommandLineDisplay
     end
   end
 
-  def announce_user_loses_the_game
-    abort("You lost! You took more than 10 guesses.")
-  end
-
 end
 
