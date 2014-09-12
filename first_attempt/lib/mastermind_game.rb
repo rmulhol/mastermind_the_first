@@ -195,8 +195,8 @@ class MastermindGame
       @turns += 1
       provide_feedback_on_user_guess
     end
-    @display.announce_user_loses_the_game if @turns >= 10
-    @display.announce_user_wins_the_game(@turns)
+    @display.announce_user_loses_the_game if @turns > 10
+    @display.announce_user_wins_the_game(@turns) <= 10
   end
 
   def provide_feedback_on_user_guess
@@ -221,7 +221,7 @@ class MastermindGame
   end
 
   def user_as_codebreaker_game_over?
-    @user_guess == @secret_code || @turns >= 10
+    @user_guess == @secret_code || @turns >= 11
   end
 
   def compare_user_guess_to_secret_code
@@ -229,8 +229,4 @@ class MastermindGame
   end
 
 end
-
-
-
-
 
