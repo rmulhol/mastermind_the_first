@@ -1,5 +1,5 @@
-require './spec_helper.rb'
-require '../lib/mastermind_game'
+require 'spec_helper'
+require 'mastermind_game'
 
 describe MastermindGame do
 
