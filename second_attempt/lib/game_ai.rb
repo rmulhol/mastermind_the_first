@@ -22,4 +22,22 @@ class GameAI
     possible_combinations[rand(generate_all_combinations.length)]
   end
 
+	def same_color_same_position(first_guess, second_guess)
+		black_pegs = 0
+		first_guess.each_with_index do |peg, position|
+		  black_pegs += 1 if peg == second_guess[position]
+		end
+		black_pegs
+	end
+
+	def same_color(first_guess, second_guess)
+		same_color = 0
+		first_guess.each_with_index do |peg, position|
+		  if second_guess.include? peg
+				same_color += 1
+				second_guess.delete_at(second_guess.index(peg))
+			end
+		end
+		same_color
+	end
 end

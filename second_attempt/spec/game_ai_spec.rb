@@ -3,15 +3,15 @@ require 'game_ai'
 describe GameAI do
   let(:test) {described_class.new(6, 4)}
 
-	describe '#generate_all_combinations' do
+  describe '#generate_all_combinations' do
     it "generates the proper number of combinations" do
       possible_combinations = test.generate_all_combinations
       expect(possible_combinations.length).to eq(1296)
     end
 
-		it "generates the right combinations" do
-		  possible_combinations = test.generate_all_combinations
-	  	expect(possible_combinations).to include([1, 1, 1, 1], [1, 1, 2, 2], [1, 2, 3, 4], [3, 4, 5, 6], [6, 6, 6, 6])
+    it "generates the right combinations" do
+      possible_combinations = test.generate_all_combinations
+      expect(possible_combinations).to include([1, 1, 1, 1], [1, 1, 2, 2], [1, 2, 3, 4], [3, 4, 5, 6], [6, 6, 6, 6])
     end
 	end
 
@@ -28,8 +28,64 @@ describe GameAI do
   	end
 	end
 
-	describe '#generate_feedback' do
+	describe '#same_color_same_position' do
+  	it "correctly identifies 0 black pegs when all pegs are different" do
+      expect(test.same_color_same_position([0, 0, 0, 0], [1, 1, 1, 1])).to eq(0)
+		end	 
+
+		it "correctly identifies 1 black peg when the first pegs are both 0" do
+      expect(test.same_color_same_position([0, 0, 0, 0], [0, 1, 1, 1])).to eq(1)
+		end
+		
+		it "correctly identifies 1 black peg when the second pegs are both 0" do
+      expect(test.same_color_same_position([0, 0, 0, 0], [1, 0, 1, 1])).to eq(1)
+		end
+		
+		it "correctly identifies 1 black peg when the second pegs are both 1" do
+      expect(test.same_color_same_position([1, 0, 0, 0], [1, 1, 1, 1])).to eq(1)
+		end
+
+		it "correctly identifies 2 black pegs when the first and second pegs are both 1" do
+      expect(test.same_color_same_position([1, 1, 0, 0], [1, 1, 1, 1])).to eq(2)
+		end
+
+		it "correctly identifies 4 black pegs when all pegs are 6" do
+      expect(test.same_color_same_position([6, 6, 6, 6], [6, 6, 6, 6])).to eq(4)
+		end
+	end
+
+  describe "#same_color" do
+		it "correctly identifies 0 same-color pegs when all pegs are different" do
+			expect(test.same_color([0, 0, 0, 0], [1, 1, 1, 1])).to eq(0)
+		end
+
+		it "correctly identifies 1 same-color peg" do
+			expect(test.same_color([1, 0, 0, 0], [1, 1, 1, 1])).to eq(1)
+		end
+
+		it "correctly identifies 1 same-color peg" do
+			expect(test.same_color([1, 1, 1, 0], [1, 2, 2, 2])).to eq(1)
+		end
     
+		it "correctly identifies 2 same-color pegs" do
+			expect(test.same_color([1, 1, 1, 2], [1, 2, 2, 2])).to eq(2)
+		end
+		
+		it "correctly identifies 2 same-color pegs" do
+			expect(test.same_color([3, 3, 0, 0], [3, 3, 3, 3])).to eq(2)
+		end
+
+    it "correctly identifies 3 same-color pegs" do
+			expect(test.same_color([1, 1, 1, 0], [1, 1, 1, 1])).to eq(3)
+		end
+
+    it "correctly identifies 3 same-color pegs" do
+			expect(test.same_color([1, 1, 1, 2], [1, 2, 2, 1])).to eq(3)
+		end
+		
+		it "correctly identifies 4 same-color pegs when all pegs are the same" do
+			expect(test.same_color([1, 1, 1, 1], [1, 1, 1, 1])).to eq(4)
+		end
 	end
 
 end
