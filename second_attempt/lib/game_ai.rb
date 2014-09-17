@@ -22,8 +22,4 @@ class GameAI
     possible_combinations[rand(generate_all_combinations.length)]
   end
 
-  def compare_guesses(first_guess, second_guess)
-    [1, 2]
-	end
-
 end
