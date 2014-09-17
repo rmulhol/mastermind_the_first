@@ -35,9 +35,18 @@ class GameAI
 		first_guess.each_with_index do |peg, position|
 		  if second_guess.include? peg
 				same_color += 1
-				second_guess.delete_at(second_guess.index(peg))
+				peg_to_remove = second_guess.index(peg)
+				second_guess.delete_at(peg_to_remove)
 			end
 		end
 		same_color
+	end
+
+	def get_feedback(first_guess, second_guess)
+    black_pegs = same_color_same_position(first_guess, second_guess)
+		total_same_color = same_color(first_guess, second_guess)
+		white_pegs = total_same_color - black_pegs
+		result_of_comparison = [black_pegs, white_pegs]
+		result_of_comparison
 	end
 end

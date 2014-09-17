@@ -88,4 +88,33 @@ describe GameAI do
 		end
 	end
 
+	describe "#get_feedback" do
+		it "correctly identifies 0 black pegs and 0 same color pegs" do
+			expect(test.get_feedback([0, 0, 0, 0], [1, 1, 1, 1])).to eq([0, 0])
+		end
+
+    it "correctly identifies 1 black peg and 0 same color pegs" do
+			expect(test.get_feedback([0, 0, 0, 0], [0, 1, 1, 1])).to eq([1, 0])
+		end
+
+		it "correctly identifies 2 black pegs and 0 same color pegs" do
+			expect(test.get_feedback([0, 0, 0, 0], [0, 0, 1, 1])).to eq([2, 0])
+		end
+
+		it "correctly identifies 0 black pegs and 1 same color peg" do
+			expect(test.get_feedback([0, 0, 1, 0], [1, 2, 2, 2])).to eq([0, 1])
+		end
+
+		it "correctly identifies 0 black pegs and 2 same color pegs" do
+			expect(test.get_feedback([0, 1, 1, 0], [1, 2, 2, 1])).to eq([0, 2])
+		end
+
+		it "correctly identifies 1 black peg and 1 white peg" do
+			expect(test.get_feedback([1, 2, 3, 4], [1, 5, 6, 2])).to eq([1, 1])
+		end
+
+		it "correctly identifies 2 black pegs and 2 white pegs" do
+			expect(test.get_feedback([1, 2, 3, 4], [2, 1, 3, 4])).to eq([2, 2])
+		end
+  end
 end
