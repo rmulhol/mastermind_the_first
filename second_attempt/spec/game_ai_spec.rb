@@ -106,11 +106,11 @@ describe GameAI do
   end
 
   describe "#is_a_possible_combination" do
-    it "keeps possible combination with four black pegs and same four pegs" do
+    it "keeps possible combination with four black pegs and four of the same pegs" do
       expect(test.is_a_possible_combination?([1, 1, 1, 1], [4, 0], [1, 1, 1, 1])).to be_truthy
     end
 
-    it "rejects possible combination with four black pegs and different four pegs" do
+    it "rejects possible combination with four black pegs and four different pegs" do
       expect(test.is_a_possible_combination?([1, 1, 1, 1], [4, 0], [2, 2, 2, 2])).to be_falsey
     end
 
@@ -118,14 +118,26 @@ describe GameAI do
       expect(test.is_a_possible_combination?([1, 1, 1, 3], [3, 0], [1, 1, 1, 2])).to be_truthy
     end
 
-    it "rejects possible combination with three black pegs and two shared pegs" do
+    it "rejects possible combination with three black pegs but only two shared pegs" do
       expect(test.is_a_possible_combination?([1, 1, 1, 3], [3, 0], [1, 1, 2, 2])).to be_falsey
     end
   end
 
-  describe "#store_possible_combinations" do
-    it "keeps only one combination with 4 black pegs" do
-      expect(test.store_possible_combinations([1, 1, 1, 1], [4, 0])).to eq([[1, 1, 1, 1]])
+  describe "#reduce_remaining_combinations" do
+    it "correctly reduces to one combination with 4 black pegs and four 1 pegs" do
+      expect(test.reduce_remaining_combinations([1, 1, 1, 1], [4, 0], test.possible_combinations)).to eq([[1, 1, 1, 1]])
+    end
+
+    it "correctly reduces to one combination with 4 black pegs and four 2 pegs" do
+      expect(test.reduce_remaining_combinations([2, 2, 2, 2], [4, 0], test.possible_combinations)).to eq([[2, 2, 2, 2]])
+    end
+
+    it "correctly reduces to two combinations with 3 black pegs" do
+      expect(test.reduce_remaining_combinations([1, 1, 1, 1], [3, 0], [[1, 1, 1, 2], [1, 1, 1, 3], [1, 2, 3, 4]])).to eq([[1, 1, 1, 2], [1, 1, 1, 3]])
+    end
+
+    it "correctly reduces to one combination with 1 black peg" do
+      expect(test.reduce_remaining_combinations([1, 1, 1, 1], [1, 0], [[1, 1, 1, 2], [1, 1, 1, 3], [1, 2, 3, 4]])).to eq([[1, 2, 3, 4]])
     end
   end
 end

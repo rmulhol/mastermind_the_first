@@ -56,11 +56,13 @@ class GameAI
     feedback_on_remaining_option == feedback
   end
 
-  def store_possible_combinations(previous_guess, feedback)
-    remaining_options = self.possible_combinations
-    remaining_options.keep_if do |possible_remaining_option|
-      is_a_possible_combination?(previous_guess, feedback, possible_remaining_option)
+  def reduce_remaining_combinations(previous_guess, feedback, remaining_combinations)
+    new_set_of_combinations = []
+    remaining_combinations.each do |possible_combination|
+      if is_a_possible_combination?(previous_guess, feedback, possible_combination)
+        new_set_of_combinations << possible_combination
+      end
     end
-    remaining_options
+    new_set_of_combinations
   end
 end
