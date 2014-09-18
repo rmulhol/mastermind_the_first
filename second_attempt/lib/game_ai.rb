@@ -32,11 +32,12 @@ class GameAI
 
   def same_color(first_guess, second_guess)
     same_color = 0
+    guess_two = second_guess.clone
     first_guess.each_with_index do |peg, position|
-      if second_guess.include? peg
+      if guess_two.include? peg
         same_color += 1
-        peg_to_remove = second_guess.index(peg)
-        second_guess.delete_at(peg_to_remove)
+        peg_to_remove = guess_two.index(peg)
+        guess_two.delete_at(peg_to_remove)
       end
     end
     same_color
@@ -48,5 +49,18 @@ class GameAI
     white_pegs = total_same_color - black_pegs
     result_of_comparison = [black_pegs, white_pegs]
     result_of_comparison
+  end
+
+  def is_a_possible_combination?(previous_guess, feedback, remaining_option)
+    feedback_on_remaining_option = get_feedback(previous_guess, remaining_option)
+    feedback_on_remaining_option == feedback
+  end
+
+  def store_possible_combinations(previous_guess, feedback)
+    remaining_options = self.possible_combinations
+    remaining_options.keep_if do |possible_remaining_option|
+      is_a_possible_combination?(previous_guess, feedback, possible_remaining_option)
+    end
+    remaining_options
   end
 end
