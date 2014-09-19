@@ -56,7 +56,7 @@ describe CommandLineDisplay do
 
   describe "#solicit_feedback_on_white_pegs" do
     it "asks the user for the number of white pegs" do
-      expect { test.solicit_feedback_on_white_pegs }.to output("How many of my picks are the correct color but in the incorrect position?\n").to_stdout
+      expect { test.solicit_feedback_on_white_pegs }.to output("How many of my picks are the correct color but not in the correct position?\n").to_stdout
     end
   end
 

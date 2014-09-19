@@ -29,7 +29,7 @@ class CommandLineDisplay
   end
 
   def solicit_feedback_on_white_pegs
-    puts "How many of my picks are the correct color but in the incorrect position?"
+    puts "How many of my picks are the correct color but not in the correct position?"
   end
 
   def convert_numbers_to_colors(array_of_numbers)

@@ -33,4 +33,18 @@ class MastermindGame
   def generate_all_combinations
     logic.generate_all_combinations
   end
+
+  def output_first_guess
+    guess = logic.generate_guess(possible_combinations)
+    guess_in_colors = display.convert_numbers_to_colors(guess)
+    display.display_first_guess(guess_in_colors)
+  end
+
+  def solicit_feedback_on_black_pegs
+    display.solicit_feedback_on_black_pegs
+  end
+
+  def solicit_feedback_on_white_pegs
+    display.solicit_feedback_on_white_pegs
+  end
 end

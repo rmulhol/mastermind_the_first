@@ -3,7 +3,8 @@ require 'game_ai'
 require 'command_line_display'
 
 describe MastermindGame do
-  let(:new_game) { described_class.new(logic: GameAI.new, display: CommandLineDisplay.new) }
+  let(:logic) { GameAI.new }
+  let(:new_game) { described_class.new(logic: logic, display: CommandLineDisplay.new) }
   
   describe "#welcome_user" do
     it "welcomes the user" do
@@ -46,5 +47,23 @@ describe MastermindGame do
       expect(new_game.generate_all_combinations).to include([1, 1, 1, 1], [1, 2, 3, 4], [3, 4, 5, 6], [6, 6, 6, 6])
     end
   end
-end
 
+  describe "#output_first_guess" do
+    it "outputs the first guess" do
+      allow(logic).to receive(:generate_guess).and_return([1, 1, 1, 1])
+      expect { new_game.output_first_guess }.to output("My first guess is [\"red\", \"red\", \"red\", \"red\"]\n").to_stdout
+    end
+  end
+
+  describe "#solicit_feedback_on_black_pegs" do
+    it "asks how many picks are correct color and position" do
+      expect { new_game.solicit_feedback_on_black_pegs }.to output("How many of my picks are the correct color and in the correct position?\n").to_stdout
+    end
+  end
+
+  describe "#solicit_feedback_on_white_pegs" do
+    it "asks how many picks are the correct color but not position" do
+      expect { new_game.solicit_feedback_on_white_pegs }.to output("How many of my picks are the correct color but not in the correct position?\n").to_stdout
+    end
+  end
+end
