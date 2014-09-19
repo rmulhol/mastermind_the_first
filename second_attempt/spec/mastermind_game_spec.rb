@@ -1,0 +1,3 @@
+require 'mastermind_game'
+
+

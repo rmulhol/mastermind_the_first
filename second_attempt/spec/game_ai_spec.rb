@@ -1,7 +1,7 @@
 require 'game_ai'
 
 describe GameAI do
-  let(:test) {described_class.new(6, 4)}
+  let(:test) {described_class.new }
 
   describe '#generate_all_combinations' do
     it "generates the proper number of combinations" do
@@ -15,15 +15,10 @@ describe GameAI do
     end
   end
 
-  describe '#convert_colors_number_to_colors_array' do
-    it "converts integers to arrays" do
-      expect(test.convert_colors_number_to_colors_array).to eq([1, 2, 3, 4, 5, 6])
-    end
-  end
-
   describe '#generate_guess' do
     it "generates a guess" do
-      my_guess = test.generate_guess
+      possible_combinations = test.generate_all_combinations
+      my_guess = test.generate_guess(possible_combinations)
       expect(my_guess.length).to eq(4)
     end
   end
@@ -125,11 +120,13 @@ describe GameAI do
 
   describe "#reduce_remaining_combinations" do
     it "correctly reduces to one combination with 4 black pegs and four 1 pegs" do
-      expect(test.reduce_remaining_combinations([1, 1, 1, 1], [4, 0], test.possible_combinations)).to eq([[1, 1, 1, 1]])
+      possible_combinations = test.generate_all_combinations
+      expect(test.reduce_remaining_combinations([1, 1, 1, 1], [4, 0], possible_combinations)).to eq([[1, 1, 1, 1]])
     end
 
     it "correctly reduces to one combination with 4 black pegs and four 2 pegs" do
-      expect(test.reduce_remaining_combinations([2, 2, 2, 2], [4, 0], test.possible_combinations)).to eq([[2, 2, 2, 2]])
+      possible_combinations = test.generate_all_combinations
+      expect(test.reduce_remaining_combinations([2, 2, 2, 2], [4, 0], possible_combinations)).to eq([[2, 2, 2, 2]])
     end
 
     it "correctly reduces to two combinations with 3 black pegs" do
