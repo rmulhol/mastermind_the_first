@@ -52,16 +52,25 @@ describe GameAI do
 
     it "correctly identifies 1 same-color peg" do
       expect(test.same_color([1, 2, 2, 2], [1, 1, 1, 1])).to eq(1)
+    end
+
+    it "correctly identifies 1 same-color peg when the first array contains three of an element and the second array contains one" do
       expect(test.same_color([1, 1, 1, 3], [1, 2, 2, 2])).to eq(1)
     end
     
     it "correctly identifies 2 same-color pegs" do
-      expect(test.same_color([1, 1, 1, 2], [1, 2, 2, 2])).to eq(2)
       expect(test.same_color([3, 3, 1, 1], [3, 3, 3, 3])).to eq(2)
+    end
+
+    it "correctly identifies 2 same-color pegs when the first array contains one of an element and the second array contains three" do
+      expect(test.same_color([1, 1, 1, 2], [1, 2, 2, 2])).to eq(2)
     end
 
     it "correctly identifies 3 same-color pegs" do
       expect(test.same_color([1, 1, 1, 2], [1, 1, 1, 1])).to eq(3)
+    end
+
+    it "correctly identifies 3 same-color pegs when the first array contains one of an element and the second array contains two" do
       expect(test.same_color([1, 1, 1, 2], [1, 2, 2, 1])).to eq(3)
     end
     

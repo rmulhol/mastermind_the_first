@@ -42,6 +42,12 @@ describe CommandLineDisplay do
     end
   end
 
+  describe "#display_next_guess" do
+    it "offers another guess" do
+      expect { test.display_next_guess(["red", "red", "red", "red"]) }.to output("My next guess is [\"red\", \"red\", \"red\", \"red\"]\n").to_stdout
+    end
+  end
+
   describe "#solicit_feedback_on_black_pegs" do
     it "asks the user for the number of black pegs" do
       expect { test.solicit_feedback_on_black_pegs }.to output("How many of my picks are the correct color and in the correct position?\n").to_stdout

@@ -20,6 +20,10 @@ class CommandLineDisplay
     puts "My first guess is " + guess.inspect
   end
 
+  def display_next_guess(guess)
+    puts "My next guess is " + guess.inspect
+  end
+
   def solicit_feedback_on_black_pegs
     puts "How many of my picks are the correct color and in the correct position?"
   end
